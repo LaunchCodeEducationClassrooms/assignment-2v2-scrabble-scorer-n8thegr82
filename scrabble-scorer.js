@@ -115,24 +115,35 @@ function vowelBonusScorer(word) {
 	return letterPoints;
  }
 
+function newScrabbleScorer(word) {
+	word = word.toLowerCase();
+	let letterPoints = 0;
+
+	for (let i = 0; i < word.length; i++) {
+			letterPoints += parseInt(newPointStructure[word[i]]);
+		 }
+	
+	return letterPoints;
+}
+
 
 
 let simpleScore = simpleScorer;
 
 let vowelBonusScore = vowelBonusScorer;
 
-let scrabbleScore = oldScrabbleScorer;
+let scrabbleScore = newScrabbleScorer;
 
 const scoringAlgorithms = [
   {name : "Simple Score", 
   description : "Each letter is worth 1 point.", scorerFunction : function(word) {
-    return simpleScorer(word);
+    return simpleScore(word);
   }},
   {name : "Bonus Vowels", description : "Vowels are 3 pts, consonants are 1 pt.", scorerFunction : function(word) {
-    return vowelBonusScorer(word);
+    return vowelBonusScore(word);
   }},
   {name : "Scrabble", description : "The traditional scoring algorithm.", scorerFunction : function(word) {
-    return oldScrabbleScorer(word);
+    return scrabbleScore(word);
   }}
 ];
 
@@ -152,9 +163,12 @@ function transform(oldPointStructure) {
 let thing = {};
 
 for (const pointValue in oldPointStructure)
- { for (const letter in oldPointStructure[pointValue]){
 
-thing[letter.toLowerCase()] = pointValue;
+
+ {
+ for (let i = 0; i < oldPointStructure[pointValue].length; i++) {
+
+thing[oldPointStructure[pointValue][i].toLowerCase()] = parseInt(pointValue);
 
  }}
 
